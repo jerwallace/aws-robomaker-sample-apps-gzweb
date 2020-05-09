@@ -15,6 +15,14 @@ TURTLEBOT3_MODEL=waffle_pi
 ROBOT_APP_INSTALL=~/$SAMPLE_APP/robot_ws/
 SIM_APP_INSTALL=~/$SAMPLE_APP/simulation_ws/
 
+# Get OS... 
+case "$(uname -s)" in
+    Linux*)     OPERATING_SYSTEM=Linux;;
+    Darwin*)    OPERATING_SYSTEM=Mac;;
+    CYGWIN*)    OPERATING_SYSTEM=Cygwin;;
+    *)          OPERATING_SYSTEM="${unameOut}"
+esac
+
 # Add the paths to your model files for each world that is included in your ROS app.
 for i in "${WORLDS[@]}"
 do
@@ -23,22 +31,13 @@ do
 done
 SIM_APP_MODEL_PATHS=$SIM_APP_MODEL_PATHS:/sim_app/turtlebot3_description_reduced_mesh/share/turtlebot3_description_reduced_mesh/models/
 
-# Ensure XML is valid for any visual DAE files in the source.
-
-computer="$(uname -s)"
-case "${computer}" in
-    Linux*)     os=Linux;;
-    Darwin*)    os=Mac;;
-    CYGWIN*)    os=Cygwin;;
-    *)          os="UNKNOWN:${unameOut}"
-esac
-
-if [ ${os} == "Linux" ]; then
+# Build the code and ensure XML is valid for any visual DAE files in the source.
+if [ ${OPERATING_SYSTEM} == "Linux" ]; then
     python fixme.py $SIM_APP_INSTALL/src
     cd $ROBOT_APP_INSTALL && colcon build
     cd $SIM_APP_INSTALL && colcon build
 elif [[ -d "$ROBOT_APP_INSTALL" ]] && [[ -d "$SIM_APP_INSTALL" ]]; then
-    echo "Running on a non-linux machine with no built applications. Please use a colcon docker image to build the ROS application before running this script."
+    echo "Running on a $OPERATING_SYSTEM machine with no built applications. Please use a colcon docker image to build the ROS application before running this script."
     exit
 else
     python fixme.py $SIM_APP_INSTALL/install
