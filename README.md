@@ -1,5 +1,7 @@
 # GZWeb Docker Support for RoboMaker Sample Applications
 
+(Note: this is experimental...)
+
 This docker file will enable you to run AWS RoboMaker sample applications in gzweb with a docker container.
 
 NOTE: For the code of these demos to connect to AWS, the docker container will need access to an AWS Access Key ID and Secret Key.
