@@ -2,9 +2,6 @@
 # generated from docker_images/create_gzweb_image.Dockerfile.em
 FROM gazebo:libgazebo9-bionic
 
-RUN source ./install/app.bash
-RUN roslaunch my_package my_launch.launch 
-
 # install packages
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
     build-essential \
