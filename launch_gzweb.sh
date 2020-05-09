@@ -24,9 +24,25 @@ done
 SIM_APP_MODEL_PATHS=$SIM_APP_MODEL_PATHS:/sim_app/turtlebot3_description_reduced_mesh/share/turtlebot3_description_reduced_mesh/models/
 
 # Ensure XML is valid for any visual DAE files in the source.
-python fixme.py $SIM_APP_INSTALL/src
-cd $ROBOT_APP_INSTALL && colcon build
-cd $SIM_APP_INSTALL && colcon build
+
+computer="$(uname -s)"
+case "${computer}" in
+    Linux*)     os=Linux;;
+    Darwin*)    os=Mac;;
+    CYGWIN*)    os=Cygwin;;
+    *)          os="UNKNOWN:${unameOut}"
+esac
+
+if [ ${os} == "Linux" ]; then
+    python fixme.py $SIM_APP_INSTALL/src
+    cd $ROBOT_APP_INSTALL && colcon build
+    cd $SIM_APP_INSTALL && colcon build
+elif [[ -d "$ROBOT_APP_INSTALL" ]] && [[ -d "$SIM_APP_INSTALL" ]]; then
+    echo "Running on a non-linux machine with no built applications. Please use a colcon docker image to build the ROS application before running this script."
+    exit
+else
+    python fixme.py $SIM_APP_INSTALL/install
+fi
 
 # Run the container with a shell. Once in the shell, simply run "/start.sh"
 if [ "$1" == "shell" ]; then
