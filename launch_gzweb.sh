@@ -1,7 +1,8 @@
 #!/bin/bash
 
 ##======= CHANGE ME (OR COMMENT THIS SECTION OUT AND USE ENV VARS) ========##
-SAMPLE_APP=aws-robomaker-sample-application-cloudwatch
+HOME=~
+WORKSPACE_DIR=aws-robomaker-sample-application-cloudwatch
 WORLDS=(aws_robomaker_bookstore_world aws_robomaker_small_house_world)
 DOCKER_IMAGE=gzweb:latest
 ROS_PACKAGE_SIM=cloudwatch_simulation
@@ -9,11 +10,9 @@ ROS_LAUNCH_FILE_SIM=test_world.launch
 ROS_PACKAGE_ROBOT=cloudwatch_robot
 ROS_LAUNCH_FILE_ROBOT=monitoring.launch 
 TURTLEBOT3_MODEL=waffle_pi
+ROBOT_APP_INSTALL=$HOME/$WORKSPACE_DIR/robot_ws/
+SIM_APP_INSTALL=$HOME/$WORKSPACE_DIR/simulation_ws/
 ##==========================##
-
-# Paths to the two ROS applications that will run in the container.
-ROBOT_APP_INSTALL=~/$SAMPLE_APP/robot_ws/
-SIM_APP_INSTALL=~/$SAMPLE_APP/simulation_ws/
 
 # Get OS... 
 case "$(uname -s)" in
