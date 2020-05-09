@@ -35,5 +35,5 @@ def prettify_all_dae_in_this_folder(input_folder_path):
 
 if __name__=="__main__":
     path = sys.argv[1]
-    print "Main path is %s", path
+    print ("Main path is %s", path)
     prettify_all_dae_in_this_folder(path)
