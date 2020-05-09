@@ -23,6 +23,7 @@ case "$(uname -s)" in
 esac
 
 # Add the paths to your model files for each world that is included in your ROS app.
+SIM_APP_MODEL_PATHS=/usr/share/gazebo-9/models
 for i in "${WORLDS[@]}"
 do
    : 
