@@ -22,7 +22,7 @@ You could also use your own ROS application.
 Clone this repository and build the docker image:
 
 ```bash
-cd
+cd ~
 git clone https://github.com/jerwallace/aws-robomaker-sample-apps-gzweb.git
 cd aws-robomaker-sample-apps-gzweb
 docker build ./ -t gzweb:latest
