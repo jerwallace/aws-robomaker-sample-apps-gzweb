@@ -33,7 +33,7 @@ sudo chmod +x launch_gzweb*
 
 ## Running
 
-If you want to see the console output, run `./launch_gzweb_with_shell.sh`, otherwise run `./launch_gzweb.sh`.
+To run gzweb, use the shell script provided `./launch_gzweb.sh`. You can attach a shell and run gzweb manually in the container by running `./launch_gzweb.sh shell`
 
 Open your browser to `http://localhost:8080`
 
