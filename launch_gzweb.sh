@@ -4,7 +4,8 @@
 HOME=~
 WORKSPACE_DIR=aws-robomaker-sample-application-cloudwatch
 WORLDS=(aws_robomaker_bookstore_world aws_robomaker_small_house_world)
-DOCKER_IMAGE=gzweb:latest
+GZWEB_DOCKER_IMAGE=gzweb:latest
+ROS_DOCKER_IMAGE=ros-custom:latest
 ROS_PACKAGE_SIM=cloudwatch_simulation
 ROS_LAUNCH_FILE_SIM=test_world.launch
 ROS_PACKAGE_ROBOT=cloudwatch_robot
@@ -45,14 +46,13 @@ fi
 
 # Run the container with a shell. Once in the shell, simply run "/start.sh"
 if [ "$1" == "shell" ]; then
-    RUN_COMMAND="--privileged -it $DOCKER_IMAGE /bin/bash"
+    RUN_COMMAND="--privileged -it $GZWEB_DOCKER_IMAGE /bin/bash"
 else
-    RUN_COMMAND="--privileged -d $DOCKER_IMAGE /start.sh"
+    RUN_COMMAND="--privileged -d $GZWEB_DOCKER_IMAGE /start.sh"
 fi
 
 docker run \
 --network="host" \
--v $ROBOT_APP_INSTALL/install:/robot_app \
 -v $SIM_APP_INSTALL/install:/sim_app \
 -e TURTLEBOT3_MODEL=$TURTLEBOT3_MODEL \
 -e ROS_PACKAGE_SIM=$ROS_PACKAGE_SIM \

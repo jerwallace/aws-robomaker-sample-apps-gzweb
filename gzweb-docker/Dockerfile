@@ -36,24 +36,10 @@ WORKDIR $GZWEB_WS
 RUN hg up default \
     && xvfb-run -s "-screen 0 1280x1024x24" ./deploy.sh -m
 
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-RUN apt update && apt install ros-melodic-desktop-full python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential -y
-RUN apt update && apt install ros-melodic-ros-controllers ros-melodic-ros-control ros-melodic-robot-state-publisher -y
-RUN apt update && apt install ros-melodic-move-base ros-melodic-dwa-local-planner ros-melodic-map-server ros-melodic-ros-monitoring-msgs ros-melodic-amcl -y
-RUN apt update && apt install ros-melodic-rosbridge-suite=0.11.5-1bionic.20200413.135853 -y
-RUN apt update && apt install ros-melodic-turtlebot3-description -y
-RUN rosdep init
-RUN rosdep update
-RUN rosdep fix-permissions
-
 # setup environment
 EXPOSE 8080
 EXPOSE 7681
 EXPOSE 9090
-
-VOLUME /robot_app
-VOLUME /sim_app
 
 RUN apt update && apt install python-tornado python-bson -y
 ADD start.sh /
