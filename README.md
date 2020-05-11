@@ -1,6 +1,6 @@
 # GZWeb Docker Support for RoboMaker Sample Applications
 
-(Note: this is experimental...)
+(Note: this is experimental and will be updated frequently...)
 
 This docker file will enable you to run AWS RoboMaker sample applications in gzweb with a docker container.
 
