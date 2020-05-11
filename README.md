@@ -74,5 +74,6 @@ export SIM_APP_INSTALL=$HOME/$WORKSPACE_DIR/simulation_ws
 ```
 
 Once running, open your browser to `http://localhost:8080`
+Also, if you add a rosbridge to your launch file, you can checkout WebViz locally here: `https://webviz.io/app`
 
 If you are in Cloud9, the Preview App functionality will automatically map 8080 to 80. So, simply press "preview app.".
