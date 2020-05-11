@@ -8,10 +8,6 @@ NOTE: For the code of these demos to connect to AWS, the docker container will n
 
 ## Getting Started
 
-### Dependencies
-
-You will need a way to run colcon build on your development machine. If you are on a Linux machine. Install ROS and the folowing: 
-
 ### Build the Docker Image
 
 Clone this repository and build the docker image:
