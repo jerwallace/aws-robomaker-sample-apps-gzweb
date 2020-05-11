@@ -27,14 +27,14 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     libgazebo9-dev=9.13.0-1* \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install git -y
 # clone gzweb
 ENV GZWEB_WS /root/gzweb
-RUN hg clone https://bitbucket.org/osrf/gzweb $GZWEB_WS
+RUN git clone https://github.com/osrf/gzweb.git $GZWEB_WS
 WORKDIR $GZWEB_WS
 
 # build gzweb
-RUN hg up default \
-    && xvfb-run -s "-screen 0 1280x1024x24" ./deploy.sh -m
+RUN xvfb-run -s "-screen 0 1280x1024x24" ./deploy.sh -m
 
 RUN apt-get update && apt-get install python-tornado python-bson -y
 ADD start.sh /

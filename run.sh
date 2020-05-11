@@ -23,13 +23,18 @@ build() {
 }
 
 create_model_path() {
+    TB3_DIR=/simulation_ws/install/turtlebot3_description_reduced_mesh/share/turtlebot3_description_reduced_mesh
     # Add the paths to your model files for each world that is included in your ROS app.
     for i in "${WORLDS[@]}"
     do
     : 
         model_path=$model_path:/simulation_ws/install/$i/share/$i/models/
     done
-        model_path=$model_path:/simulation_ws/install/turtlebot3_description_reduced_mesh/share/turtlebot3_description_reduced_mesh/models/
+        model_path=$model_path:$TB3_DIR/models
+        if [ ! -f "$TB3_DIR/models/turtlebot3_description_reduced_mesh/model.config" ]; then
+            touch $TB3_DIR/models/turtlebot3_description_reduced_mesh/model.config
+            ln -s $TB3_DIR/meshes $TB3_DIR/models/turtlebot3_description_reduced_mesh/meshes 
+        fi
 }
 
 while test $# -gt 0
