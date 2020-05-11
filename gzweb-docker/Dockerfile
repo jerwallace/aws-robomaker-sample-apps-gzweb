@@ -36,6 +36,6 @@ WORKDIR $GZWEB_WS
 RUN hg up default \
     && xvfb-run -s "-screen 0 1280x1024x24" ./deploy.sh -m
 
-RUN apt update && apt install python-tornado python-bson -y
+RUN apt-get update && apt-get install python-tornado python-bson -y
 ADD start.sh /
 RUN chmod +x /start.sh

@@ -1,4 +1,4 @@
-version: '2'
+version: '3.3'
 
 networks:
   ros:
@@ -7,52 +7,77 @@ networks:
 services:
   gzweb:
     depends_on:
-      - simulation_app
-    image: gzweb:latest
+      - simulation-app
+    image: ${GZWEB_DOCKER_IMAGE}
     command: stdbuf -o L /start.sh
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
     environment:
-      - "GAZEBO_MASTER_URI=http://simulation_app:11425"
-      - "GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:/simulation_ws/install/aws_robomaker_bookstore_world/share/aws_robomaker_bookstore_world/models"
+      - "GAZEBO_MASTER_URI=http://simulation-app:11425"
+      - "GAZEBO_MODEL_PATH=${SIM_APP_MODEL_PATHS}"
+      - "DEBUG=true"
     ports:
       - 8080:8080
+      - 7681:7681
     volumes:
-      - ~/aws-robomaker-sample-apps-gzweb/aws-robomaker-sample-application-cloudwatch/simulation_ws/:/simulation_ws
+      - ${SIM_APP_INSTALL}:/simulation_ws
     networks:
       - ros
     restart: "no"
 
   ros-master:
-    image: ros:melodic-ros-core
+    image: ${ROS_DOCKER_IMAGE}
     command: stdbuf -o L roscore
     networks:
       - ros
     restart: "no"
 
-  robot_app:
-    image: ros:melodic-ros-core
+  robot-app:
+    image: ${ROS_DOCKER_IMAGE}
     depends_on:
-      - ros-master
+      - simulation-app
     environment:
       - "ROS_MASTER_URI=http://ros-master:11311"
-      - "ROS_HOSTNAME=robot"
-    command: ls /robot_ws
+      - "ROS_HOSTNAME=robot-app"
+      - "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+      - "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
+      - "AWS_REGION=us-west-2"
+      - "TURTLEBOT3_MODEL=${TURTLEBOT3_MODEL}"
+    command: stdbuf -o L bash -c " source /robot_ws/install/setup.sh && roslaunch ${ROS_PACKAGE_ROBOT} ${ROS_LAUNCH_FILE_ROBOT}"
+    ports:
+      - 9090:9090
     networks:
       - ros
     volumes:
-      - ~/aws-robomaker-sample-apps-gzweb/aws-robomaker-sample-application-cloudwatch/robot_ws/:/robot_ws
-    restart: "no"
-
-  simulation_app:
-    image: rosapp:latest
+      - ${ROBOT_APP_INSTALL}:/robot_ws
+    restart: always
+  simulation-app:
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://ros-master:11311"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+    image: ${ROS_DOCKER_IMAGE}
     depends_on:
       - ros-master
     environment:
-      - "GAZEBO_MASTER_URI=http://simulation_app:11425"
+      - "GAZEBO_MASTER_URI=http://simulation-app:11425"
       - "ROS_MASTER_URI=http://ros-master:11311"
-      - "ROS_HOSTNAME=simulation"
+      - "ROS_HOSTNAME=simulation-app"
+      - "TURTLEBOT3_MODEL=${TURTLEBOT3_MODEL}"
+    ports:
+      - 11425:11425
     volumes:
-      - ~/aws-robomaker-sample-apps-gzweb/aws-robomaker-sample-application-cloudwatch/simulation_ws/:/simulation_ws
-    command: ls /simulation_ws
+      - ${SIM_APP_INSTALL}:/simulation_ws
+    command: stdbuf -o L bash -c "source /simulation_ws/install/setup.sh && roslaunch ${ROS_PACKAGE_SIM} ${ROS_LAUNCH_FILE_SIM}"
     networks:
       - ros
     restart: "no"
