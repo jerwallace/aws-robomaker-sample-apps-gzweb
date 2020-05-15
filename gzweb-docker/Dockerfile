@@ -36,6 +36,5 @@ WORKDIR $GZWEB_WS
 # build gzweb
 RUN xvfb-run -s "-screen 0 1280x1024x24" ./deploy.sh -m
 
-RUN apt-get update && apt-get install python-tornado python-bson -y
 ADD start.sh /
 RUN chmod +x /start.sh
