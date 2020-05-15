@@ -1,4 +1,4 @@
-# GZWeb Docker Support for RoboMaker Sample Applications
+# GZWeb Docker Example for RoboMaker Sample Application Local Development
 
 (Note: this is experimental and will be updated frequently...)
 
