@@ -47,7 +47,7 @@ To run gzweb, use the shell script provided `./run.sh`. Commands you can run are
 ```bash
 ./run.sh --build-only # this command will use colcon in a container to build the sample app.
 ./run.sh --build # this command will use colcon in a container to build the sample app, then it will run the docker-compose up command in a silent shell
-./run.sh --shell # this command will print log output to the screen.
+./run.sh -d # this command will run docker compose in detached mode (no shell output).
 ```
 
 The default settings will work with the cloudwatch sample application, however feel free to modify them.
